@@ -17,3 +17,7 @@ kernel.o: kernel.c
 .PHONY: clean
 clean:
 	rm -fr kernel *.o
+
+.PHONY: docker_image
+docker_image:
+	docker build -t dev -f Dockerfile.build .
