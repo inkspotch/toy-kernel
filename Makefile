@@ -5,10 +5,10 @@ all:
 		-w="/build" \
 		dev make kernel
 
-kernel: kernel_stub.o kernel.o link.ld
-	ld -m elf_i386 -T link.ld -o $@ kernel_stub.o kernel.o
+kernel: boot.o kernel.o link.ld
+	ld -m elf_i386 -T link.ld -o $@ boot.o kernel.o
 
-kernel_stub.o: kernel.asm
+boot.o: boot.asm
 	nasm -f elf32 $< -o $@
 
 kernel.o: kernel.c
