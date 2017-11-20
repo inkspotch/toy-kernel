@@ -5,7 +5,7 @@ all:
 		-w="/build" \
 		dev make kernel
 
-kernel: kernel_stub.o kernel.o
+kernel: kernel_stub.o kernel.o link.ld
 	ld -m elf_i386 -T link.ld -o $@ kernel_stub.o kernel.o
 
 kernel_stub.o: kernel.asm
