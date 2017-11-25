@@ -1,21 +1,30 @@
-;nasm directive - 32 bit
 bits 32
-section .text
-        ;multiboot spec
-        align 4
-        dd 0x1BADB002            ;magic
-        dd 0x00                  ;flags
-        dd - (0x1BADB002 + 0x00) ;checksum. m+f+c should be zero
 
-global start
-extern kmain	        ;kmain is defined in the c file
+MAGIC equ 0x1BADB002
+MBALIGN equ 1<<0
+MEMINFO equ 1<<1
+FLAGS equ MBALIGN | MEMINFO
 
-start:
-  cli 			;block interrupts
-  mov esp, stack_space	;set stack pointer
-  call kmain
-  hlt		 	;halt the CPU
+section .multiboot
+align 4
+  dd MAGIC
+  dd FLAGS
+  dd -(MAGIC + FLAGS) ;checksum. m+f+c should be zero
 
 section .bss
-resb 8192		;8KB for stack
-stack_space:
+align 16
+stack_bottom:
+resb 16384
+stack_top:
+
+section .text
+
+global start:function (start.end - start)
+start:
+  cli
+  mov esp, stack_top
+
+  extern kmain
+  call kmain
+  hlt
+.end:
