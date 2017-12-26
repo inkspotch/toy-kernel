@@ -1,5 +1,5 @@
 
-CFLAGS := -m32 -ffreestanding -O2 -Wall -Wextra
+CFLAGS := -m32 -ffreestanding -O2 -Wall -Wextra -nostdlib
 INCLUDES := -I.
 SOURCE := $(wildcard *.c)
 OBJECTS := $(SOURCE:.c=.o)
